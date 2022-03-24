@@ -1,0 +1,19 @@
+{
+  "name": "assignmentdevabratsaikia",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "nodemon src/index.js"
+  },
+  "keywords": [],
+  "author": "Devabrat Saikia",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "mongoose": "^6.2.8",
+    "validator": "^13.7.0"
+  }
+}
