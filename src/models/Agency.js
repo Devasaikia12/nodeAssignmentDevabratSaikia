@@ -1,4 +1,49 @@
 import mongoose from 'mongoose';
+/**
+ * @swagger
+ * components :
+ *  schemas :
+ *    createAgencyInput :
+ *      type : object
+ *      requied :
+ *          - name
+ *          - address1
+ *          - state
+ *          - city
+ *          - phoneNumber
+ *      properties :
+ *        name :
+ *          type :string
+ *          default : Deva Saikia
+ *        address1 :
+ *          type :string
+ *          default : Hatigaon
+ *        state :
+ *          type :string
+ *          default : Assam
+ *        city :
+ *          type :string
+ *          default : Guwahati
+ *        phoneNumber :
+ *          type :string
+ *          default : 9898767779
+ *    createAgencyResponse :
+ *      type : object
+ *      properties :
+ *        name :
+ *          type :string
+ *        address1 :
+ *          type :string
+ *        state :
+ *          type :string
+ *        city :
+ *          type :string
+ *        phoneNumber :
+ *          type :string
+ *
+ *
+ *
+ */
 
 const agencySchema = mongoose.Schema(
   {

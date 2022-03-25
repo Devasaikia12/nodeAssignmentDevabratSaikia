@@ -1,4 +1,78 @@
 import mongoose from 'mongoose';
+
+/**
+ * @swagger
+ * components :
+ *  schemas :
+ *    createClientInput :
+ *      type : object
+ *      requied :
+ *          - name
+ *          - email
+ *          - phoneNumber
+ *          - totalBill
+ *      properties :
+ *        name :
+ *          type :string
+ *          default : Deva Saikia
+ *        email :
+ *          type :string
+ *          default : deva@example.com
+ *        phoneNumber :
+ *          type :number
+ *          default : 9898769999
+ *        totalBill :
+ *          type :number
+ *          default : 654321
+ *    createClientResponse :
+ *      type : object
+ *      properties :
+ *        name :
+ *          type :string
+ *        email :
+ *          type :string
+ *        phoneNumber :
+ *          type :number
+ *        totalBill :
+ *          type :number
+ *
+ *
+ */
+
+/**
+ * @swagger
+ * components :
+ *  schemas :
+ *    createClientUpdate :
+ *      type : object
+ *      properties :
+ *        name :
+ *          type :string
+ *          default : D Saikia
+ *        email :
+ *          type :string
+ *          default : deva123@example.com
+ *        phoneNumber :
+ *          type :number
+ *          default : 9898769999
+ *        totalBill :
+ *          type :number
+ *          default : 655567
+ *    createClientResponse :
+ *      type : object
+ *      properties :
+ *        name :
+ *          type :string
+ *        email :
+ *          type :string
+ *        phoneNumber :
+ *          type :number
+ *        totalBill :
+ *          type :number
+ *
+ *
+ */
+
 const clientSchema = mongoose.Schema(
   {
     clientId: {
@@ -7,7 +81,7 @@ const clientSchema = mongoose.Schema(
       default: Date.now().toString(),
     },
     agencyId: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: 'Agency',
     },
