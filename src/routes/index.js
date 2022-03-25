@@ -5,6 +5,7 @@ import {
   createClientAgencyDetails,
   updateClientDetails,
   getMaxTotalbill,
+  getAllDetails,
 } from '../controllers/index.js';
 // create agency and client
 
@@ -67,7 +68,10 @@ routes.post('/create', createClientAgencyDetails);
  *         description: Created
  */
 routes.put('/updateClient/:clientId', updateClientDetails);
-// // get maximum totalbill
-// routes.get('/getMaxTotalbill', getMaxTotalbill);
+// get maximum totalbill
+
+routes.get('/', getAllDetails);
+
+routes.get('/getMaxTotalbill', getMaxTotalbill);
 
 export default routes;

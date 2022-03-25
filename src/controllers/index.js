@@ -21,7 +21,7 @@ const createClientAgencyDetails = async (req, res) => {
     };
     if (agency_data) {
       const client_body = {
-        agencyId: agency_data.agencyId,
+        agencyId: agency_data._id,
         name: req.body.client_name,
         email: req.body.client_email,
         phoneNumber: req.body.client_phoneNumber,
@@ -40,8 +40,7 @@ const createClientAgencyDetails = async (req, res) => {
       res.status(201).json({ ...agencyData, ...clientData });
     }
   } catch (error) {
-    res.status(400);
-    console.error('Invalid Data', error);
+    res.status(400).send(error);
   }
 };
 
@@ -56,7 +55,7 @@ const updateClientDetails = async (req, res) => {
     );
     res.status(201).json({ clientId });
   } catch (error) {
-    console.error('Invalid Data', error);
+    res.status(400).send(error);
   }
 };
 
@@ -86,8 +85,32 @@ const getMaxTotalbill = async (req, res) => {
     ]);
     res.status(200).json(data);
   } catch (error) {
-    console.log(error);
+    res.status(400).send(error);
   }
 };
 
-export { createClientAgencyDetails, updateClientDetails, getMaxTotalbill };
+const getAllDetails = async (req, res) => {
+  try {
+    const data = await Client.aggregate([
+      {
+        $lookup: {
+          from: 'agencies',
+          localField: 'agencyId',
+          foreignField: 'agencyId',
+          as: 'resultAgencies',
+        },
+      },
+      { $unwind: '$resultAgencies' },
+    ]);
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+};
+
+export {
+  createClientAgencyDetails,
+  updateClientDetails,
+  getMaxTotalbill,
+  getAllDetails,
+};
