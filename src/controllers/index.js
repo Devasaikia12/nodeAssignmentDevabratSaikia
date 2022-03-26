@@ -1,5 +1,44 @@
 import Agency from '../models/Agency.js';
 import Client from '../models/Client.js';
+import User from '../models/User.js';
+import issueToken from '../uttils/jwt.js';
+const signup = async (req, res) => {
+  const { name, email, password } = req.body;
+  try {
+    const userExist = await User.findOne({ email });
+    if (userExist) {
+      return res.status(409).send('Email already exist');
+    }
+
+    const user = await User.create({ name, email, password });
+    if (user) {
+      const jwtToken = await issueToken(user);
+      console.log(jwtToken);
+      res.status(201).send({ token: jwtToken.token, user: user });
+    }
+  } catch (error) {
+    res.status(404).send({ error: error.message });
+  }
+};
+const login = async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const emailExist = await User.findOne({ email });
+    if (!emailExist) {
+      return res.status(409).send('Email not found');
+    }
+
+    const user = await emailExist.macthPassword(password);
+    if (user) {
+      const jwtToken = await issueToken(emailExist);
+      res.status(201).json({ token: jwtToken.token, user: emailExist });
+    } else {
+      return res.status(409).send('email and password not matched');
+    }
+  } catch (error) {
+    return res.status(400).send({ error: error.message });
+  }
+};
 
 const createClientAgencyDetails = async (req, res) => {
   const agency_body = {
@@ -46,8 +85,7 @@ const createClientAgencyDetails = async (req, res) => {
 
 const updateClientDetails = async (req, res) => {
   //const { agencyId, name, email, phoneNumber, totalBill } = req.body;
-  console.log(req.body);
-  console.log(req.params.clientId);
+
   try {
     const clientId = await Client.findByIdAndUpdate(
       req.params.clientId,
@@ -83,7 +121,8 @@ const getMaxTotalbill = async (req, res) => {
         },
       },
     ]);
-    res.status(200).json(data);
+    console.log(data);
+    res.status(200).json({ data });
   } catch (error) {
     res.status(400).send(error);
   }
@@ -91,18 +130,12 @@ const getMaxTotalbill = async (req, res) => {
 
 const getAllDetails = async (req, res) => {
   try {
-    const data = await Client.aggregate([
-      {
-        $lookup: {
-          from: 'agencies',
-          localField: 'agencyId',
-          foreignField: 'agencyId',
-          as: 'resultAgencies',
-        },
-      },
-      { $unwind: '$resultAgencies' },
-    ]);
-    res.status(200).json(data);
+    const clientData = await Client.find();
+    const agencyData = await Agency.find();
+    res.status(200).json({
+      agency: agencyData,
+      client: clientData,
+    });
   } catch (error) {
     res.status(400).send(error);
   }
@@ -113,4 +146,6 @@ export {
   updateClientDetails,
   getMaxTotalbill,
   getAllDetails,
+  login,
+  signup,
 };

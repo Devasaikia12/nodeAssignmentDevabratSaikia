@@ -1,11 +1,14 @@
 import express from 'express';
 const routes = express.Router();
+import authToken from '../middleware/jwtToken.js';
 
 import {
   createClientAgencyDetails,
   updateClientDetails,
   getMaxTotalbill,
   getAllDetails,
+  login,
+  signup,
 } from '../controllers/index.js';
 // create agency and client
 
@@ -39,7 +42,7 @@ import {
  *
  */
 
-routes.post('/create', createClientAgencyDetails);
+routes.post('/create', authToken, createClientAgencyDetails);
 // update client
 
 /**
@@ -73,5 +76,10 @@ routes.put('/updateClient/:clientId', updateClientDetails);
 routes.get('/', getAllDetails);
 
 routes.get('/getMaxTotalbill', getMaxTotalbill);
+
+// login routes
+routes.post('/login', login);
+// signup
+routes.post('/singup', signup);
 
 export default routes;
